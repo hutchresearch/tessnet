@@ -1,4 +1,5 @@
 # TESS Data Processing Pipeline
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14968070.svg)](https://doi.org/10.5281/zenodo.14968070)
 
 ## Labels
 1. Run `preprocessing/pickle/fits_to_pkl.py` on the FITS file.
