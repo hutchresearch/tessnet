@@ -1,0 +1,18 @@
+#base
+architecture: cnn
+input_channels: 1
+num_classes: 4
+loss_weight: 1
+classifier_head: true
+cont_head: false
+period_head: false
+cleaning_blocks: 2
+backbone_blocks: 5
+backbone_block_convs: 1
+backbone_time_reduction_factor: 4
+backbone_channel_increase_factor: 4
+conv_crop_size: 4
+head_hidden_units: 0
+head_hidden_layers: 0
+head_dropout: 0
+re_zero: true

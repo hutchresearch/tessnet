@@ -1,0 +1,38 @@
+defaults:
+  - _self_
+  - dataset: catalog_ds
+  - model: catalog_model
+  - training: training
+  - datavis: datavis
+  - augment: augment
+
+dataloader:
+  train:
+    stratified: True
+    batch_size: 64
+  dev:
+    batch_size: 32
+  pin_memory: True
+
+logger:
+  use_wandb: True
+  name: OverrideName
+  project: tessnet2-debug
+  entity: harrylts
+  notes: None
+
+early_stopping:
+  # set patience to large number to disable early stopping (still saves)
+  patience: 50000
+  verbose: True
+  delta: 0.0001
+
+hydra:
+  job:
+    chdir: True
+
+seed: 42
+save_dir: ./outputs
+status_dir: /cluster/research-groups/hutchinson/data/ml_astro/tess/catalog/status
+processed_pkl_dir: /cluster/research-groups/hutchinson/data/ml_astro/tess/catalog/processed_pkl
+pred_dir: /cluster/research-groups/hutchinson/data/ml_astro/tess/catalog/preds

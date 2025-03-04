@@ -1,0 +1,14 @@
+stable: True
+
+augmentor_1:
+  proportion: 0
+  noise:
+    p: 0.6
+    mag: [0.001, 0.01]
+  value_shift:
+    p: 0.6
+    mag: [-0.05, 0.05]
+  flip_x:
+    p: 0.6
+  flip_y:
+    p: 0.6

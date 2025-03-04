@@ -1,0 +1,16 @@
+python add_splits.py C:\Users\harry\TESSNET-2\data\tess_stars_v1_pre.pd.pkl C:\Users\harry\TESSNET-2\data --t2sectors 2 --splits 0.92 0.04 0.04
+python mark_pkl.py C:/Users/harry/TESSNET-2/data/tess_stars.pd.pkl C:\Users\harry\TESSNET-2\data\cubes C:/Users/harry/TESSNET-2/data --sectors 9 --crop_size 6
+python clean_pkl.py C:/Users/harry/TESSNET-2/data/tess_stars_marked.pd.pkl C:/Users/harry/TESSNET-2/data --threshold 0.2
+python zarr_to_hdf5.py C:/Users/harry/TESSNET-2/data/tess_stars_cleaned.pd.pkl C:\Users\harry\TESSNET-2\data\cubes C:/Users/harry/TESSNET-2/data/hdf5 --sectors 9
+python save_fits_header_timestamps.py D:\TESS\9 C:\Users\harry\TESSNET-2\data\timestamps
+python fits_to_pkl.py C:\Users\harry\TESSNET-2\data\tess_labels_v2_with_point.fits C:\Users\harry\TESSNET-2\data
+
+python copy_splits.py C:\Users\harry\TESSNET-2\data\tess_stars_v1.pd.pkl C:\Users\harry\TESSNET-2\data\tess_stars_cleaned.pd.pkl C:\Users\harry\TESSNET-2\data\tess_stars_cleaned_copy.pd.pkl
+
+python copy_cols.py C:\Users\harry\TESSNET-2\data\tess_stars_v1_pre_1.pd.pkl C:\Users\harry\TESSNET-2\data\tess_stars_cleaned.pd.pkl C:\Users\harry\TESSNET-2\data\tess_stars_cleaned_1.pd.pkl
+python copy_cols.py C:\Users\harry\TESSNET-2\data\tess_stars_v1_pre_2.pd.pkl C:\Users\harry\TESSNET-2\data\tess_stars_cleaned_1.pd.pkl C:\Users\harry\TESSNET-2\data\tess_stars_cleaned_2.pd.pkl
+
+python3 /cluster/research-groups/hutchinson/bin/migrate/migrate.py --venv /cluster/research-groups/hutchinson/projects/ml_asto_tess/harry/0/venv --mem 30 --name MarkCorruption --command "python3 mark_pkl.py /cluster/research-groups/hutchinson/data/ml_astro/tess/new_pkls/tess_stars_v1.pd.pkl /cluster/research-groups/hutchinson/data/ml_astro/tess/datacubes/log_float16 /cluster/research-groups/hutchinson/data/ml_astro/tess/new_pkls --crop_size 6 --sectors 1 7 9 12 14 18 21"
+python3 clean_pkl.py /cluster/research-groups/hutchinson/data/ml_astro/tess/new_pkls/tess_stars_marked.pd.pkl /cluster/research-groups/hutchinson/data/ml_astro/tess/new_pkls --threshold 0.2
+python3 zarr_to_hdf5.py /cluster/research-groups/hutchinson/data/ml_astro/tess/new_pkls/tess_stars_cleaned.pd.pkl /cluster/research-groups/hutchinson/data/ml_astro/tess/datacubes/log_float16 /cluster/research-groups/hutchinson/data/ml_astro/tess/new_hdf5 --sectors 1 7 9 12 14 18 21
+python3 /cluster/research-groups/hutchinson/bin/migrate/migrate.py --venv /cluster/research-groups/hutchinson/projects/ml_asto_tess/harry/0/venv --mem 30 --name CreateHdf5 --command "python3 zarr_to_hdf5.py /cluster/research-groups/hutchinson/data/ml_astro/tess/new_pkls/tess_stars_cleaned.pd.pkl /cluster/research-groups/hutchinson/data/ml_astro/tess/datacubes/log_float16 /cluster/research-groups/hutchinson/data/ml_astro/tess/new_hdf5 --sectors 1 7 9 12 14 18 21"

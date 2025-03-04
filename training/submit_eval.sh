@@ -1,0 +1,1 @@
+python3 /cluster/research-groups/hutchinson/bin/migrate/migrate.py --venv "/cluster/research-groups/hutchinson/projects/ml_asto_tess/harry/0/venv" --gpus 1 --gpu_mem 7 --mem 30 --name NCatalogEval --command "python3 eval_catalog.py" --queue_count 4

@@ -1,0 +1,135 @@
+#! /usr/bin/env python3
+
+"""
+check_download_completed.py
+    Looks in a fits folder for a sector and determines if there are missing
+    files that should have been downloaded but weren't. If they weren't
+    downloaded then it will download them.
+"""
+
+import argparse
+import os
+import subprocess
+from astropy.io import fits
+
+
+def main():
+    """
+    main
+        Drives the script
+    """
+    args = parse_args()
+    downloaded_fits, curl_file = get_files(args.fits_dir)
+    curl_commands = get_curl_commands(args.fits_dir, curl_file)
+    missing_fits_commands, bad_files, bad_file_sizes = find_missing_bad_fits(args.fits_dir, downloaded_fits, curl_commands)
+    print("BAD_FITS")
+    assert len(missing_fits_commands) == len(bad_file_sizes)
+    assert len(bad_file_sizes) == len(bad_files)
+
+    for i, cmd in enumerate(missing_fits_commands):
+        print(cmd, bad_files[i], bad_file_sizes[i])
+    delete_bad_files(args.fits_dir, bad_files)
+    download_missing_fits(args.fits_dir, missing_fits_commands)
+
+def delete_bad_files(fits_dir, bad_files):
+    print("Removing {} bad files".format(len(bad_files)))
+    for bad_file in bad_files:
+        if bad_file is None:
+            continue
+
+        file_path = os.path.join(fits_dir, bad_file)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+def download_missing_fits(fits_dir, missing_fits_commands):
+    """
+    Runs the curl commands for missing images
+    """
+    print("{} commands to run".format(len(missing_fits_commands)))
+    for comm in missing_fits_commands:
+        print(comm)
+        proc = subprocess.Popen(comm, cwd=fits_dir, shell=True)
+        proc.wait()
+
+
+def find_missing_bad_fits(fits_dir, fits_files, curl_commands):
+    """
+    find_missing_bad_fits
+        returns a list of the missing image download commands
+    """
+
+    bad_downloaded_files = {}
+    for downloaded_fits in fits_files:
+        file_size = os.path.getsize(os.path.join(fits_dir, downloaded_fits))
+        file_size_kb = file_size / 1024  # Convert bytes to kilobytes
+
+        if file_size_kb < 34000:
+            bad_downloaded_files[downloaded_fits] = file_size_kb
+
+    missing_file_commands = []
+    bad_file_sizes = []
+    bad_files = []
+    for command in curl_commands:
+        already_downloaded = False
+        for downloaded_fits in fits_files:
+            if downloaded_fits in command:
+                already_downloaded = True
+                if downloaded_fits in bad_downloaded_files:
+                    missing_file_commands.append(command)
+                    bad_files.append(downloaded_fits)
+                    bad_file_sizes.append(bad_downloaded_files[downloaded_fits])
+                break
+
+        if not already_downloaded:
+            missing_file_commands.append(command)
+            bad_files.append(None)
+            bad_file_sizes.append(-1)
+    
+    return missing_file_commands, bad_files, bad_file_sizes
+
+
+def get_curl_commands(fits_dir, curl_file):
+    """
+    get_curl_commands
+        Gets the list of commands from the download bash file
+    """
+    curl_file = os.path.join(fits_dir, curl_file)
+    curl_commands = []
+    with open(curl_file, "r") as filehandle:
+        curl_commands = filehandle.readlines()
+    for idx, command in enumerate(curl_commands):
+        curl_commands[idx] = command.strip()
+    curl_commands.remove("#!/bin/sh")
+    return curl_commands
+
+
+def get_files(fits_dir):
+    """
+    get_files
+        Gets the list of image files in the fits dir
+    """
+    downloaded_fits = []
+    curl_file = None
+    for filename in sorted(os.listdir(fits_dir)):
+        if ".fits" in filename:
+            downloaded_fits.append(filename)
+        if "tesscurl" in filename:
+            curl_file = filename
+    return downloaded_fits, curl_file
+
+
+def parse_args():
+    """
+    Parses commandline arguments
+    """
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument("fits_dir",
+                        type=str,
+                        help="Path to the fits images dir for a SINGLE sector (str)\n"+\
+                        "[example: /cluster/research-groups/hutchinson/data/ml_astro/tess/fits/sec_01]"
+                )
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    main()

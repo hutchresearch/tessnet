@@ -1,0 +1,1 @@
+python3 /cluster/research-groups/hutchinson/bin/migrate/migrate.py --venv "/cluster/research-groups/hutchinson/projects/ml_asto_tess/harry/0/venv" --mem 80 --name DownloadFiles --command "python3 download_files.py --download_dir /cluster/research-groups/hutchinson/data/ml_astro/tess/catalog/csv --save_dir /cluster/research-groups/hutchinson/data/ml_astro/tess/catalog/pkl"

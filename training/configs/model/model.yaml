@@ -1,0 +1,23 @@
+# base
+architecture: cnn
+# [cnn, cnn_2, lstm_2d, lstm_3d]
+input_channels: 1
+num_classes: 4
+loss_weight: 1
+classifier_head: False
+period_head: False
+cont_head: True
+
+# cnn params
+cleaning_blocks: 2
+backbone_blocks: 5
+backbone_block_convs: 1
+backbone_time_reduction_factor: 4 # Quarter every block
+backbone_channel_increase_factor: 4 # Quadruple every block
+conv_crop_size: 4
+head_hidden_units: 0
+head_hidden_layers: 0
+head_dropout: 0
+
+# lstm params
+re_zero: True

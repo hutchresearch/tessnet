@@ -1,0 +1,35 @@
+defaults:
+  - _self_
+  - dataset: dataset
+  - model: model
+  - training: training
+  - datavis: datavis
+  - augment: augment
+
+dataloader:
+  train:
+    stratified: True
+    batch_size: 64
+  dev:
+    batch_size: 32
+  pin_memory: True
+
+logger:
+  use_wandb: True
+  name: OverrideName
+  project: tessnet2-experiments
+  entity: ml_astro_tess
+  notes: None
+
+early_stopping:
+  # set patience to large number to disable early stopping (still saves)
+  patience: 50000
+  verbose: True
+  delta: 0.0001
+
+hydra:
+  job:
+    chdir: True
+
+seed: 42
+save_dir: ./outputs

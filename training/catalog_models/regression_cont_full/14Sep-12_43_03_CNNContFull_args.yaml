@@ -1,0 +1,128 @@
+dataloader:
+  train:
+    stratified: true
+    batch_size: 256
+  dev:
+    batch_size: 256
+  pin_memory: true
+logger:
+  use_wandb: true
+  name: CNNContFull
+  project: tessnet2-experiments
+  entity: ml_astro_tess
+  notes: None
+early_stopping:
+  patience: 50000
+  verbose: true
+  delta: 0.0001
+seed: 42
+save_dir: ./outputs
+dataset:
+  data_pd_pkl_path: /cluster/research-groups/hutchinson/data/ml_astro/tess/new_pkls/tess_stars_rb_cleaned_allmag_fullsec.pd.pkl
+  crop_hdf5_dir: /cluster/research-groups/hutchinson/data/ml_astro/tess/new_rb_hdf5
+  timestamps_dir: /cluster/research-groups/hutchinson/data/ml_astro/tess/timestamps
+  sectors:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 26
+  num_eager_load: -1
+  remove_zero_slices: true
+  include_nonvar: true
+  cont_full: true
+  min_cont: 0
+  min_cont_full: 0
+  min_bp_diff: 1.1
+  time_strategy: zeros
+  filter_giants: true
+  period_max_value: 100
+  crop_90p_value: 9.2
+model:
+  architecture: cnn
+  input_channels: 1
+  num_classes: 4
+  loss_weight: 1
+  classifier_head: false
+  period_head: false
+  cont_head: true
+  cleaning_blocks: 2
+  backbone_blocks: 5
+  backbone_block_convs: 1
+  backbone_time_reduction_factor: 4
+  backbone_channel_increase_factor: 4
+  conv_crop_size: 4
+  head_hidden_units: 0
+  head_hidden_layers: 0
+  head_dropout: 0
+  re_zero: true
+training:
+  optimizer: adam
+  lr: 0.001
+  class_head_weight: 1
+  epochs: 300
+  scheduler: plateau
+  patience: 7
+  factor: 0.5
+  step_size: 100
+  milestones:
+  - 100
+  - 200
+  - 300
+datavis:
+  input_data_dir: C:\Users\harry\TESSNET-2\ml_astro_tess20\training\datavis
+  fig_save_dir: C:\Users\harry\TESSNET-2\ml_astro_tess20\training\datavis\plots
+  reg_x_label: period_pred
+  reg_y_label: true_period
+  class_x_label: class_pred
+  class_y_label: true_class
+  sector_label: sector
+  tmag_label: tmag
+  cmap: Blues
+  scale: log
+  color_func: class_split_true
+  subset_command: tmag<=12
+  pt_size: 1
+  fig: scatter
+  f_name: 30Jan-12_10_35_predictions.csv
+  show: true
+  save: false
+augment:
+  stable: true
+  augmentor_1:
+    proportion: 0
+    noise:
+      p: 0.6
+      mag:
+      - 0.001
+      - 0.01
+    value_shift:
+      p: 0.6
+      mag:
+      - -0.05
+      - 0.05
+    flip_x:
+      p: 0.6
+    flip_y:
+      p: 0.6

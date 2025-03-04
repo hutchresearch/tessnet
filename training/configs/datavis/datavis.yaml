@@ -1,0 +1,31 @@
+#input_data_dir: '/Users/harryqiang/PycharmProjects/astro_git/ml_astro_tess20/training/datavis'
+#fig_save_dir: '/Users/harryqiang/PycharmProjects/astro_git/ml_astro_tess20/training/datavis/plots'
+input_data_dir: 'C:\Users\harry\TESSNET-2\ml_astro_tess20\training\datavis'
+fig_save_dir: 'C:\Users\harry\TESSNET-2\ml_astro_tess20\training\datavis\plots'
+
+# df column labels
+reg_x_label: period_pred
+reg_y_label: true_period
+class_x_label: class_pred
+class_y_label: true_class
+sector_label: sector
+tmag_label: tmag
+# mpl cmap
+cmap: 'Blues'
+
+# scatter
+# values: [linear, log]
+scale: log
+# values: [kde, fftkde, class_split_true, class_split_pred, class_split_error, sector_split, tmag_split]
+color_func: class_split_true
+# format: python conditional statement, using df column names. multiple statements should be wrapped in parentheses
+# and joined with '&'. Example: (tmag <= 12) & (true_period == 2)
+subset_command: "tmag<=12"
+pt_size: 1
+
+# run-datavis
+# values: [cfm, scatter]
+fig: scatter
+f_name: '30Jan-12_10_35_predictions.csv'
+show: True
+save: False

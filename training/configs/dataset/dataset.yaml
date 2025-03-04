@@ -1,0 +1,23 @@
+data_pd_pkl_path: "/cluster/research-groups/hutchinson/data/ml_astro/tess/new_pkls/tess_stars_rb_cleaned_allmag_fullsec.pd.pkl" # tess_stars_rb_cleaned
+crop_hdf5_dir: '/cluster/research-groups/hutchinson/data/ml_astro/tess/new_rb_hdf5'
+timestamps_dir: "/cluster/research-groups/hutchinson/data/ml_astro/tess/timestamps"
+
+#2 is strictly for testing
+sectors: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+#sectors: [1, 7, 9, 12, 14, 18, 21]
+num_eager_load: -1
+remove_zero_slices: True
+include_nonvar: True
+cont_full: False
+
+# closer to 1 = less contamination
+min_cont: 0 #0.9
+min_cont_full: 0
+min_bp_diff: 1.1
+
+# options: ['interpolate', 'zeros', null]
+time_strategy: 'zeros'
+filter_giants: True
+
+period_max_value: 100
+crop_90p_value: 9.2

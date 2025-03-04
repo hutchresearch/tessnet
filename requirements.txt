@@ -1,0 +1,11 @@
+astropy
+h5py
+hydra-core
+matplotlib
+pandas
+torchaudio
+torchvision
+tqdm
+wandb
+zarr
+

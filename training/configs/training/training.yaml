@@ -1,0 +1,13 @@
+optimizer: "adam"
+lr: 1e-3
+class_head_weight: 1
+epochs: 300
+
+# scheduler
+scheduler: 'plateau'
+patience: 7
+# [null, 'plateau', 'step', 'multi_step']
+factor: 0.5
+# factor by which learning rate is reduced when scheduler acts
+step_size: 100
+milestones: [100, 200, 300]
